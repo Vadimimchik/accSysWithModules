@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="WIN-1251">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моя система обліку</title>
+
+    <!-- бібліотека Font Awesome для іконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles/menu.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/modal.css">
+    <link rel="stylesheet" href="styles/sidebar.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="sidebar" id="sidebar">
+        <ul role="menubar">
+            <!-- <li role="menuitem" class="consts-item">
+                <i class="fas fa-cog"></i>
+                <span>Константи</span>
+            </li> -->
+            <li role="menuitem" class="refs-item">
+                <i class="fas fa-book"></i>
+                <span>Довідники</span>
+            </li>
+            <ul role="menu" class="submenu-item" id="refsubmenu">
+                <li role="menuitem" class="submenu-item" id="warehouses">Склади</li>
+                <li role="menuitem" class="submenu-item" id="customers">Контрагенти</li>
+                <li role="menuitem" class="submenu-item" id="goods">Номенклатура</li>
+            </ul>
+            <li role="menuitem" class="docs-item">
+                <i class="fas fa-file-alt"></i>
+                <span>Документи</span>
+            </li>
+            <ul role="menu" class="submenu-item" id="docsubmenu">
+                <li role="menuitem" class="submenu-item" id="invoices">Прибуткові накладні</li>
+                <li role="menuitem" class="submenu-item" id="saleinvoices">Видаткові накладні</li>
+                <!-- <li role="menuitem" class="submenu-item" id="goodsmoving">Переміщення товарів</li> -->
+                <li role="menuitem" class="submenu-item" id="salereturn">Повернення покупцю</li>
+                <li role="menuitem" class="submenu-item" id="purchasereturn">Повернення постачальнику</li>
+            </ul>
+            <!-- <li role="menuitem" class="reports-item">
+                <i class="fas fa-chart-bar"></i>
+                <span>Звіти</span>
+            </li>
+            <ul role="menu" class="submenu-item" id="reportsubmenu">
+                <li role="menuitem" class="submenu-item" id="goodsmovement">Рух товарів</li>
+                <li role="menuitem" class="submenu-item" id="settlements">Взаєморозрахунки</li>
+            </ul> -->
+        </ul>
+    </div>
+
+    <button class="toggle-btn" id="toggleBtn" onclick="toggleSidebar()"><</button>
+
+    <div class="content" id="content">
+        <div class="date-header" id="dateHeader">
+            <a id="aCurrentDateTime" href="#">
+		        <span id="currentDateTime"></span>
+	        </a>            
+	        <input type="date" id="dateInput" class="date-input">
+        </div>
+
+        <h1>Вітаю тебе друже мій</h1>
+
+        <!-- Таблиця для довідників -->
+        <div id="warehouseSection" class="hidden" data-type="table">
+            <button class="add-btn" onclick="openRefModal('warehouse')" title="Додати запис">+</button>
+            <button class="delete-btn" onclick="deleteSelectedRow()" title="Видалити обраний запис"">-</button>
+            <button class="refresh-btn" onclick="refreshRefTable('warehouse')" title="Оновити">O</button>
+            <table id="warehouseTable">
+                <thead>
+                    <tr>
+                        <!-- <th style="visibility: hidden;">id</th> -->
+                        <th>Код</th>
+                        <th>Найменування</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Рядки з'являтимуться тут -->
+                </tbody>
+            </table>
+        </div>
+
+        <div id="customerSection" class="hidden" data-type="table">
+            <button class="add-btn" onclick="openRefModal('customer')" title="Додати запис">+</button>
+            <button class="delete-btn" onclick="deleteSelectedRow()" title="Видалити обраний запис"">-</button>
+            <button class="refresh-btn" onclick="refreshRefTable('customer')" title="Оновити">O</button>
+            <table id="customerTable">
+                <thead>
+                    <tr>
+                        <!-- <th style="visibility: hidden;">id</th> -->
+                        <th>Код</th>
+                        <th>Найменування</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Рядки з'являтимуться тут -->
+                </tbody>
+            </table>
+        </div>
+
+        <div id="goodSection" class="hidden" data-type="table">
+            <button class="add-btn" onclick="openRefModal('good')" title="Додати запис">+</button>
+            <button class="delete-btn" onclick="deleteSelectedRow()" title="Видалити обраний запис"">-</button>
+            <button class="refresh-btn" onclick="refreshRefTable('good')" title="Оновити">O</button>
+            <table id="goodTable">
+                <thead>
+                    <tr>
+                        <!-- <th style="visibility: hidden;">id</th> -->
+                        <th>Код</th>
+                        <th>Найменування</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Рядки з'являтимуться тут -->
+                </tbody>
+            </table>
+        </div>
+
+        <div id="invoiceSection" class="hidden" data-type="table">
+            <button class="add-btn" onclick="openDocModal('invoice')" title="Додати запис">+</button>
+            <button class="delete-btn" onclick="deleteSelectedRow()" title="Видалити обраний запис"">-</button>
+            <!-- <button class="refresh-btn" onclick="refreshWarehouses()" title="Оновити">O</button> -->
+            <table id="invoiceTable">
+                <thead>
+                    <tr>
+                        <th>Дата</th>
+                        <th>Номер</th>
+                        <th>Контрагент</th>
+                        <th>Склад</th>
+                        <th>Сума</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Рядки з'являтимуться тут -->
+                </tbody>
+            </table>
+        </div>
+
+        <div id="saleinvoiceSection" class="hidden" data-type="table">
+            <button class="add-btn" onclick="openDocModal('saleinvoice')" title="Додати запис">+</button>
+            <button class="delete-btn" onclick="deleteSelectedRow()" title="Видалити обраний запис"">-</button>
+            <!-- <button class="refresh-btn" onclick="refreshWarehouses()" title="Оновити">O</button> -->
+            <table id="saleinvoiceTable">
+                <thead>
+                    <tr>
+                        <th>Дата</th>
+                        <th>Номер</th>
+                        <th>Контрагент</th>
+                        <th>Склад</th>
+                        <th>Сума</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Рядки з'являтимуться тут -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- <div id="goodsmovingSection" class="hidden" data-type="table">
+            <button class="add-btn" onclick="openRefModal('warehouse')" title="Додати запис">+</button>
+            <button class="delete-btn" onclick="deleteSelectedRow()" title="Видалити обраний запис"">-</button>
+            <button class="refresh-btn" onclick="refreshWarehouses()" title="Оновити">O</button>
+            <table id="goodsmovingTable">
+                <thead>
+                    <tr>
+                        <th>Дата</th>
+                        <th>Номер</th>
+                        <th>Звідки</th>
+                        <th>Куди</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div> -->
+
+        <div id="salereturnSection" class="hidden" data-type="table">
+            <button class="add-btn" onclick="openDocModal('salereturn')" title="Додати запис">+</button>
+            <button class="delete-btn" onclick="deleteSelectedRow()" title="Видалити обраний запис"">-</button>
+            <!-- <button class="refresh-btn" onclick="refreshWarehouses()" title="Оновити">O</button> -->
+            <table id="salereturnTable">
+                <thead>
+                    <tr>
+                        <th>Дата</th>
+                        <th>Номер</th>
+                        <th>Контрагент</th>
+                        <th>Склад</th>
+                        <th>Сума</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Рядки з'являтимуться тут -->
+                </tbody>
+            </table>
+        </div>
+
+        <div id="purchasereturnSection" class="hidden" data-type="table">
+            <button class="add-btn" onclick="openDocModal('purchasereturn')" title="Додати запис">+</button>
+            <button class="delete-btn" onclick="deleteSelectedRow()" title="Видалити обраний запис"">-</button>
+            <!-- <button class="refresh-btn" onclick="refreshWarehouses()" title="Оновити">O</button> -->
+            <table id="purchasereturnTable">
+                <thead>
+                    <tr>
+                        <th>Дата</th>
+                        <th>Номер</th>
+                        <th>Контрагент</th>
+                        <th>Склад</th>
+                        <th>Сума</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Рядки з'являтимуться тут -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Модальні вікна -->
+<div class="modal" id="refModal">
+    <div class="modal-content">
+        <h2 id="refModalTitle">Додати новий елемнет</h2>
+        <div class="form-group">
+            <label for="refModalCode">Код:</label>
+            <input type="text" id="refModalCode" placeholder="Введіть код" class="hidden">
+        </div>
+        <label for="refModalName">Найменування:</label>
+        <input type="text" id="refModalName" placeholder="Введіть найменування" class="hidden">
+        <button class="add-btn" id="saveBtn" onclick="saveRefRow()">Зберегти</button>
+        <button class="modal-close" onclick="closeRefModal()">Закрити</button>
+    </div>
+</div>
+
+<div class="modal" id="docModal">
+    <div class="modal-content">
+        <h3 id="docModalTitle">Додати новий докумет</h3>
+        <div>
+            <label for="docModalNumber">Номер:</label>
+            <input type="text" id="docModalNumber" placeholder="Номер" class="hidden">
+            <label for="docModalDate">Дата:</label>
+            <input type="date" id="docModalDate" placeholder="Дата" class="hidden">
+
+        </div>
+        <label for="docModalCustomer">Контрагент:</label>
+        <input type="text" id="docModalCustomer" placeholder="Введіть контрагента">
+        <label for="docModalWarehouse">Склад:</label>
+        <input type="text" id="docModalWarehouse" placeholder="Введіть склад">
+
+        <!-- Таблиця товарів -->
+        <table class="goods-table">
+            <thead>
+                <tr>
+                    <th>Товар</th>
+                    <th>Кількість</th>
+                    <th>Ціна</th>
+                    <th>Сума</th>
+                </tr>
+            </thead>
+            <tbody id="goodsTableBody">
+                <!-- <tr>
+                    <td><input type="text" class="goodName" placeholder="Товар"></td>
+                    <td><input type="number" class="goodQuantity" placeholder="Кількість"></td>
+                    <td><input type="number" class="goodPrice" placeholder="Ціна"></td>
+                    <td><input type="text" class="goodTotal" placeholder="Сума" readonly></td>
+                </tr> -->
+            </tbody>
+        </table>
+
+        <button class="add-btn" id="saveBtn" onclick="saveDocRow()">Зберегти</button>
+        <button class="modal-close" onclick="closeDocModal()">Закрити</button>
+        <button class="addRow-btn" id="addRowGoodsBtn" onclick="addRowGoods()">Додати товар</button>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="src/dateTime.js"></script>
+<script src="src/constants.js"></script>
+<script src="src/refs.js"></script>
+<script src="src/menu.js"></script>
+<script src="src/table.js"></script>
+<script src="src/modal.js"></script>
+<script src="src/sidebar.js"></script>
+<script src="src/main.js"></script>
+
+</body>
+</html>

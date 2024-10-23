@@ -1,0 +1,53 @@
+.submenu-item {
+    top: 0px;
+    width: 205px;
+    background-color: #444;
+    padding: 10px;
+    padding-left: 30px;
+    font-size: 16px;
+    display: none;
+}
+
+.submenu-item i {
+    font-size: 18px;
+    margin-right: 10px;
+    display: none;
+}
+
+.submenu-item ul {
+    font-size: 18px;
+    margin-right: 10px;
+    display: none;
+}
+
+.popup-submenu {
+    /* position: absolute; */
+    top: 0px;
+    right: -110px;
+    width: 205px;
+    background-color: #333;
+    color: white;
+    display: none;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.popup-submenu li {
+    padding: 10px;
+    border-bottom: 1px solid #444;
+    cursor: pointer;
+}
+
+.popup-submenu li:hover {
+    background-color: #555;
+}
+
+.popup-submenu ul {
+    font-size: 18px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.sidebar.minimized .popup-menu {
+    right: -260px;
+}

@@ -1,0 +1,110 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+}
+
+.content {
+    flex: 1;
+    margin-left: max(12%, 240px);
+    padding: 10px;
+    width: calc(100% - max(12%, 240px));
+    transition: margin-left 0.3s ease, width 0.3s ease;
+}
+
+.sidebar.minimized ~ .content {
+    margin-left: 60px;
+    width: calc(100% - 60px);
+}
+
+.toggle-btn {
+    position: absolute;
+    left: max(12%, 240px);
+    top: 15px;
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    transition: left 0.3s;
+}
+
+.date-header {
+    background-color: #444;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-size: 18px;
+}
+
+.date-input {
+    display: none;
+}
+
+#aCurrentDateTime {
+    color: white;
+    text-decoration: none;
+}
+
+/* Приховати таблиці за замовчуванням */
+.hidden {
+    display: none;
+}
+
+/* Стиль для кнопок */
+.add-btn, .delete-btn, .refresh-btn {
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.add-btn:hover, .delete-btn:hover, .refresh-btn:hover {
+    background-color: #575757;
+}
+
+/* Стиль для вибраного рядка */
+.selected {
+    background-color: #cce5ff !important;
+}
+
+/* Стиль для таблиці */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.goods-table {
+    margin-top: 0px;
+    margin-left: 0px;
+}
+
+.goods-table th, .goods-table td {
+    padding: 0px;
+    margin-top: 0px;
+    margin-left: 0px;
+}
+
+.goods-table input {
+    width: 100%;
+    box-sizing: border-box;
+}
