@@ -108,7 +108,6 @@ $(document).ready(function() {
 	$('#goodsTableBody').on('input', '.goodQuantity, .goodPrice', function() {
 		calculateTotal();
 	});
-
 });
 
 setInterval(setCurrentDateTime, 60 * 1000);

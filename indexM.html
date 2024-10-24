@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/modal.css">
     <link rel="stylesheet" href="styles/sidebar.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 <body>
 
@@ -38,7 +39,7 @@
                 <li role="menuitem" class="submenu-item" id="invoices">Прибуткові накладні</li>
                 <li role="menuitem" class="submenu-item" id="saleinvoices">Видаткові накладні</li>
                 <!-- <li role="menuitem" class="submenu-item" id="goodsmoving">Переміщення товарів</li> -->
-                <li role="menuitem" class="submenu-item" id="salereturn">Повернення покупцю</li>
+                <li role="menuitem" class="submenu-item" id="salereturn">Повернення від покупця</li>
                 <li role="menuitem" class="submenu-item" id="purchasereturn">Повернення постачальнику</li>
             </ul>
             <!-- <li role="menuitem" class="reports-item">
@@ -68,7 +69,7 @@
         <div id="warehouseSection" class="hidden" data-type="table">
             <button class="add-btn" onclick="openRefModal('warehouse')" title="Додати запис">+</button>
             <button class="delete-btn" onclick="deleteSelectedRow()" title="Видалити обраний запис"">-</button>
-            <button class="refresh-btn" onclick="refreshRefTable('warehouse')" title="Оновити">O</button>
+            <button class="refresh-btn" onclick="refRefreshTable('warehouse')" title="Оновити">O</button>
             <table id="warehouseTable">
                 <thead>
                     <tr>
@@ -86,7 +87,7 @@
         <div id="customerSection" class="hidden" data-type="table">
             <button class="add-btn" onclick="openRefModal('customer')" title="Додати запис">+</button>
             <button class="delete-btn" onclick="deleteSelectedRow()" title="Видалити обраний запис"">-</button>
-            <button class="refresh-btn" onclick="refreshRefTable('customer')" title="Оновити">O</button>
+            <button class="refresh-btn" onclick="refRefreshTable('customer')" title="Оновити">O</button>
             <table id="customerTable">
                 <thead>
                     <tr>
@@ -104,7 +105,7 @@
         <div id="goodSection" class="hidden" data-type="table">
             <button class="add-btn" onclick="openRefModal('good')" title="Додати запис">+</button>
             <button class="delete-btn" onclick="deleteSelectedRow()" title="Видалити обраний запис"">-</button>
-            <button class="refresh-btn" onclick="refreshRefTable('good')" title="Оновити">O</button>
+            <button class="refresh-btn" onclick="refRefreshTable('good')" title="Оновити">O</button>
             <table id="goodTable">
                 <thead>
                     <tr>
@@ -122,7 +123,7 @@
         <div id="invoiceSection" class="hidden" data-type="table">
             <button class="add-btn" onclick="openDocModal('invoice')" title="Додати запис">+</button>
             <button class="delete-btn" onclick="deleteSelectedRow()" title="Видалити обраний запис"">-</button>
-            <!-- <button class="refresh-btn" onclick="refreshWarehouses()" title="Оновити">O</button> -->
+            <button class="refresh-btn" onclick="refRefreshTable('invoice')" title="Оновити">O</button>
             <table id="invoiceTable">
                 <thead>
                     <tr>
@@ -142,7 +143,7 @@
         <div id="saleinvoiceSection" class="hidden" data-type="table">
             <button class="add-btn" onclick="openDocModal('saleinvoice')" title="Додати запис">+</button>
             <button class="delete-btn" onclick="deleteSelectedRow()" title="Видалити обраний запис"">-</button>
-            <!-- <button class="refresh-btn" onclick="refreshWarehouses()" title="Оновити">O</button> -->
+            <button class="refresh-btn" onclick="refRefreshTable('saleinvoice')" title="Оновити">O</button>
             <table id="saleinvoiceTable">
                 <thead>
                     <tr>
@@ -180,7 +181,7 @@
         <div id="salereturnSection" class="hidden" data-type="table">
             <button class="add-btn" onclick="openDocModal('salereturn')" title="Додати запис">+</button>
             <button class="delete-btn" onclick="deleteSelectedRow()" title="Видалити обраний запис"">-</button>
-            <!-- <button class="refresh-btn" onclick="refreshWarehouses()" title="Оновити">O</button> -->
+            <button class="refresh-btn" onclick="refRefreshTable('salereturnSection')" title="Оновити">O</button>
             <table id="salereturnTable">
                 <thead>
                     <tr>
@@ -200,7 +201,7 @@
         <div id="purchasereturnSection" class="hidden" data-type="table">
             <button class="add-btn" onclick="openDocModal('purchasereturn')" title="Додати запис">+</button>
             <button class="delete-btn" onclick="deleteSelectedRow()" title="Видалити обраний запис"">-</button>
-            <!-- <button class="refresh-btn" onclick="refreshWarehouses()" title="Оновити">O</button> -->
+            <button class="refresh-btn" onclick="refRefreshTable('purchasereturnSection')" title="Оновити">O</button>
             <table id="purchasereturnTable">
                 <thead>
                     <tr>
@@ -244,10 +245,18 @@
             <input type="date" id="docModalDate" placeholder="Дата" class="hidden">
 
         </div>
-        <label for="docModalCustomer">Контрагент:</label>
-        <input type="text" id="docModalCustomer" placeholder="Введіть контрагента">
-        <label for="docModalWarehouse">Склад:</label>
-        <input type="text" id="docModalWarehouse" placeholder="Введіть склад">
+        <div>
+            <label for="docModalCustomer">Контрагент:</label>
+            <!-- <input type="text" id="docModalCustomer" placeholder="Введіть контрагента"> -->
+            <select id="docModalCustomer" name="docModalCustomer"></select>
+        </div>
+        <div>
+            <label for="docModalWarehouse">Склад:</label>
+            <!-- <input type="text" id="docModalWarehouse" placeholder="Введіть склад"> -->
+            <select id="docModalWarehouse" name="docModalWarehouse">
+                <!-- тут будуть склади  -->
+            </select>
+        </div>
 
         <!-- Таблиця товарів -->
         <table class="goods-table">
@@ -260,12 +269,6 @@
                 </tr>
             </thead>
             <tbody id="goodsTableBody">
-                <!-- <tr>
-                    <td><input type="text" class="goodName" placeholder="Товар"></td>
-                    <td><input type="number" class="goodQuantity" placeholder="Кількість"></td>
-                    <td><input type="number" class="goodPrice" placeholder="Ціна"></td>
-                    <td><input type="text" class="goodTotal" placeholder="Сума" readonly></td>
-                </tr> -->
             </tbody>
         </table>
 
@@ -276,9 +279,11 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="src/dateTime.js"></script>
 <script src="src/constants.js"></script>
 <script src="src/refs.js"></script>
+<script src="src/docs.js"></script>
 <script src="src/menu.js"></script>
 <script src="src/table.js"></script>
 <script src="src/modal.js"></script>

@@ -108,3 +108,8 @@ th {
     width: 100%;
     box-sizing: border-box;
 }
+
+.goods-table select {
+    width: 350px;
+    height: 35px;
+}

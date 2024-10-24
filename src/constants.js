@@ -11,10 +11,14 @@ const systemElements = {
 const $refModal = $("#refModal");
 const $refModalCode = $("#refModalCode");
 const $refModalName = $("#refModalName");
-const $refBodyTables =  {
+const $bodyTables =  {
 	warehouse: $('#warehouseTable tbody'),
 	customer: $('#customerTable tbody'),
-	good: $('#goodTable tbody')
+	good: $('#goodTable tbody'),
+	invoice: $('#invoiceTable tbody'),
+	saleinvoice: $('#saleinvoiceTable tbody'),
+	salereturn: $('#salereturnTable tbody'),
+	purchasereturn: $('#purchasereturnTable tbody')
 };
 
 const $docModal = $("#docModal");

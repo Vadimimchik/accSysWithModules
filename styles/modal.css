@@ -76,11 +76,15 @@
 }
 
 #docModalCustomer {
-    max-width: 580px;
+    max-width: 600px;
     width: 100%;
+    height: 30px;
+    margin-bottom: 10px;
 }
 
 #docModalWarehouse {
-    max-width: 620px;
+    max-width: 635px;
     width: 100%;
+    height: 30px;
+    margin-bottom: 10px;
 }

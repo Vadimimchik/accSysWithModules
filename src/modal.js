@@ -17,12 +17,34 @@ function getCurrentDate() {
 	return yyyy + '-' + mm + '-' + dd;
 }
 
+function fillCustomers() {
+	const customers = getRows("customer");
+	$docModalCustomer.empty();
+	$docModalCustomer.append('<option value=""></option>');
+	customers.forEach(element => {
+		$docModalCustomer.append(`<option value="${element.id}">${element.name}</option>`);
+	});
+}
+
+function fillWarehouses() {
+	const warehouses = getRows("warehouse");
+	$docModalWarehouse.empty();
+	$docModalWarehouse.append('<option value=""></option>');
+	warehouses.forEach(element => {
+		$docModalWarehouse.append(`<option value="${element.id}">${element.name}</option>`);
+	});
+}
+
 function openDocModal(mode) {
 	let innerText;
     if (mode === "invoice") {
         innerText = "Прибуткова накладна"
-    } else {
-        innerText = mode;
+    } else if (mode === "saleinvoice") {
+        innerText = "Видаткова накладна"
+    } else if (mode === "purchasereturn") {
+        innerText = "Повернення постачальнику"
+    } else if (mode === "saleinvoice") {
+        innerText = "Повернення від покупця"
     }
     if (!editMode) {
         innerText += "(Новий)"
@@ -35,6 +57,9 @@ function openDocModal(mode) {
 	}
 	$docModal.css("display", "flex");
 	editMode = false; // Скидаємо режим редагування
+
+	fillCustomers();
+	fillWarehouses();
 }
 
 function closeRefModal() {
@@ -59,7 +84,7 @@ function saveRefRow() {
 	let name = $refModalName.val();
 	let cell1;
 	let cell2;
-	let id;
+	let currentElement;
 
 	if (code && name) {
 		if (editMode && selectedRow) {
@@ -67,7 +92,10 @@ function saveRefRow() {
 			const cells = selectedRow.find('td');
 			cell1 = cells.eq(0);
 			cell2 = cells.eq(1);
-			id = cells.eq(0).val()
+			// currentElement = selectedRow.val();
+			currentElement = Ref.getByID(currentTableName, selectedRow.val());
+			currentElement.code = code;
+			currentElement.name = name;
 		} else {
 			// Додавання нового запису
 			let newRow = $("<tr></tr>").appendTo(currentTable);
@@ -84,33 +112,31 @@ function saveRefRow() {
 			newRow.on("dblclick", function () {
 				editRefRow(newRow);
 			});
+
+			currentElement = Ref.new(currentTableName, code, name);
 		}
 		cell1.text(code);
 		cell2.text(name);
 
-		let currentElement;
-		if (currentTableName == "good") {
-			currentElement = new Good(code, name, id);
-		} else if (currentTableName == "customer"){
-			currentElement = new Customer(code, name, id);
-		} else if (currentTableName == "warehouse"){
-			currentElement = new Warehouse(code, name, id);
-		}
-
 		currentElement.save();
-		cell1.val(currentElement.id);
+		// cell1.val(currentElement);
+		selectedRow.val(currentElement.id);
 		closeRefModal();
+		refRefreshTable(currentTableName);
 	} else {
 		alert("Будь ласка, заповніть всі поля.");
 	}
 }
 
-function saveDocRow(docType) {
+function saveDocRow() {
 	let date = 	$docModalDate.val();
 	let number = $docModalNumber.val();
+	let customerText = $docModalCustomer.find('option:selected').text();;
+	let warehouseText = $docModalWarehouse.find('option:selected').text();;
 	let customer = $docModalCustomer.val();
 	let warehouse = $docModalWarehouse.val();
 	let sum = 0;
+	let currentDoc;
 	let cell1;
 	let cell2;
 	let cell3;
@@ -126,21 +152,19 @@ function saveDocRow(docType) {
             cell3 = cells.eq(2);
             cell4 = cells.eq(3);
 			cell5 = cells.eq(4);
+			currentDoc = Doc.getByID(currentTableName, selectedRow.val());
+			currentDoc.date = date;
+			currentDoc.number = number;
 		} else {
 			// Додавання нового запису
 			let newRow = $("<tr></tr>").appendTo(currentTable);
+			selectedRow = newRow;
 
 			cell1 = $("<td></td>").appendTo(newRow);
 			cell2 = $("<td></td>").appendTo(newRow);
             cell3 = $("<td></td>").appendTo(newRow);
             cell4 = $("<td></td>").appendTo(newRow);
 			cell5 = $("<td></td>").appendTo(newRow);
-			$('#goodsTableBody .goodTotal').each(function() {
-                var value = parseFloat($(this).val()); // Отримуємо значення інпуту
-                if (!isNaN(value)) {
-                    sum += value; // Додаємо значення до загальної суми
-                }
-            });
 
 			// Додаємо функцію для вибору рядка
 			newRow.on("click", function () {
@@ -151,29 +175,80 @@ function saveDocRow(docType) {
 			newRow.on("dblclick", function () {
 				editDocRow(newRow);
 			});
+
+			if(currentTableName == "invoice") {
+				currentDoc = new Invoice(date, number);
+			} else if(currentTableName == "saleinvoice") {
+				currentDoc = new SaleInvoice(date, number);
+			} else if(currentTableName == "purchasereturn") {
+				currentDoc = new PurchaseReturn(date, number);
+			} else if(currentTableName == "salereturn") {
+				currentDoc = new SaleReturn(date, number);
+			}
 		}
+		
+		$('#goodsTableBody .goodTotal').each(function() {
+			const value = parseFloat($(this).val()); // Отримуємо значення інпуту
+			if (!isNaN(value)) {
+				sum += value; // Додаємо значення до загальної суми
+			}
+		});
+
+		currentDoc.customer = customer;
+		currentDoc.warehouse = warehouse;
+		currentDoc.docSum = sum;
+
+		currentDoc.deleteRows();
+		$('#goodsTableBody tr').each(function() {
+			// 'this' посилається на поточний рядок (tr)
+			const good = $(this).find(".goodName").val();
+			const quantity = $(this).find('.goodQuantity').val();
+			const price = $(this).find('.goodPrice').val();
+			const sum = $(this).find('.goodTotal').val();
+		
+			currentDoc.addRow(good, quantity, price, sum);
+		});
+
+		currentDoc.save();
+
 		cell1.text(date);
 		cell2.text(number);
-		cell3.text(customer);
-		cell4.text(warehouse);
+		cell3.text(customerText);
+		cell4.text(warehouseText);
+		cell3.val(customer);
+		cell4.val(warehouse);
 		cell5.text(sum);
 
+		selectedRow.val(currentDoc.id);
 		closeDocModal();
+		refRefreshTable(currentTableName);
 	// } else {
 	// 	alert("Будь ласка, заповніть всі поля.");
 	// }
 
 }
 
+function fillGoods(rowNum) {
+	const $goodName = $("#goodName" + rowNum);
+	const goods = getRows("good");
+	$goodName.empty();
+	$goodName.append('<option value=""></option>');
+	goods.forEach(element => {
+		$goodName.append(`<option value="${element.id}">${element.name}</option>`);
+	});
+}
+
 function addRowGoods() {
+	const rowNum = $("#goodsTableBody tr").length;
 	$goodsTableBody.append(`
 		<tr>
-			<td><input type="text" class="goodName" placeholder="Товар"></td>
-			<td><input type="number" class="goodQuantity" placeholder="Кількість"></td>
-			<td><input type="number" class="goodPrice" placeholder="Ціна"></td>
-			<td><input type="text" class="goodTotal" placeholder="Сума" readonly></td>
+			<td><select id="goodName${rowNum}" class="goodName" name="goodName"></select></td>
+			<td><input type="number"  id="goodQuantity${rowNum}" class="goodQuantity" placeholder="Кількість"></td>
+			<td><input type="number"  id="goodPrice${rowNum}" class="goodPrice" placeholder="Ціна"></td>
+			<td><input type="text"  id="goodTotal${rowNum}" class="goodTotal" placeholder="Сума" readonly></td>
 		</tr>
 	`);
+	fillGoods(rowNum);
 }
 
 // Функція для підрахунку суми
