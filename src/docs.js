@@ -111,10 +111,12 @@ class Doc {
             return new PurchaseReturn(obj);
         } else if(docName == "salereturn") {
             return new SaleReturn(obj);
+        } else {
+            return new Doc(obj);
         }
     }
 
-    static getByID(tableName, id) {
+    static getByID(id, tableName) {
         for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
             if (key.includes(id)) {
@@ -124,6 +126,17 @@ class Doc {
 
         return "";
     }
+
+    delete() {
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key.includes(this.#id)) {
+                localStorage.removeItem(key);
+                break;
+            }
+        }
+    }
+
 }
 
 class GoodsDoc extends Doc{

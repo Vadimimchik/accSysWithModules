@@ -93,7 +93,7 @@ function saveRefRow() {
 			cell1 = cells.eq(0);
 			cell2 = cells.eq(1);
 			// currentElement = selectedRow.val();
-			currentElement = Ref.getByID(currentTableName, selectedRow.val());
+			currentElement = Ref.getByID(selectedRow.val(), currentTableName);
 			currentElement.code = code;
 			currentElement.name = name;
 		} else {
@@ -122,7 +122,7 @@ function saveRefRow() {
 		// cell1.val(currentElement);
 		selectedRow.val(currentElement.id);
 		closeRefModal();
-		refRefreshTable(currentTableName);
+		refreshTable(currentTableName);
 	} else {
 		alert("Будь ласка, заповніть всі поля.");
 	}
@@ -152,7 +152,7 @@ function saveDocRow() {
             cell3 = cells.eq(2);
             cell4 = cells.eq(3);
 			cell5 = cells.eq(4);
-			currentDoc = Doc.getByID(currentTableName, selectedRow.val());
+			currentDoc = Doc.getByID(selectedRow.val(), currentTableName);
 			currentDoc.date = date;
 			currentDoc.number = number;
 		} else {
@@ -221,7 +221,7 @@ function saveDocRow() {
 
 		selectedRow.val(currentDoc.id);
 		closeDocModal();
-		refRefreshTable(currentTableName);
+		refreshTable(currentTableName);
 	// } else {
 	// 	alert("Будь ласка, заповніть всі поля.");
 	// }

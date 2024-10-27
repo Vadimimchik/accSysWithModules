@@ -94,9 +94,10 @@ class Ref {
         if (refName == "good") {
             return new Good(obj, name, id);
         }
+        return new Ref(obj);
     }
 
-    static getByID(tableName, id) {
+    static getByID(id, tableName) {
         for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
             if (key.includes(id)) {

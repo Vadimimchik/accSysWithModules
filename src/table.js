@@ -32,7 +32,7 @@ function editDocRow(row) {
 	fillWarehouses();
 	
     const cells = row.find('td');
-    const currentDoc = Doc.getByID(currentTableName, row.val());
+    const currentDoc = Doc.getByID(row.val(), currentTableName);
     const rowsQuantity = currentDoc.rowsQuantity();
     
 	$docModalDate.val(cells.eq(0).text());
@@ -55,21 +55,27 @@ function editDocRow(row) {
 	editMode = true;  // У режимі редагування
 }
 
-// Функція для видалення вибраного рядка
-function deleteSelectedRow() {
+// Функція для видалення вибраного рядка довідника
+function deleteSelectedRowRef() {
     if (selectedRow !== null) {
-        // const curentVal = selectedRow.find('td').val();
-        const curentVal = selectedRow.val();
-        if (curentVal.isMark) {
+        const curentRef = Ref.getByID(selectedRow.val());
+        if (curentRef.isMark) {
             curentVal.cancelDel();
             selectedRow.css("text-decoration", "none");
         } else {
-            curentVal.delete();
+            curentRef.delete();
             selectedRow.css("text-decoration", "line-through");
         }
-        // $(selectedRow).remove(); 
-        // selectedRow = null;	
     }
+}
+
+// Функція для видалення вибраного рядка документу
+function deleteSelectedRowDoc() {
+    if (selectedRow !== null) {
+        const curentDoc = Doc.getByID(selectedRow.val());
+        curentDoc.delete();
+    }
+    refreshTable(currentTableName);
 }
 
 function showRowRef(row) {
@@ -156,7 +162,7 @@ function getRows(tableName) {
     return rows;
 }
 
-function refRefreshTable(tableName) {
+function refreshTable(tableName) {
     $bodyTables[tableName].empty();
     showRows(tableName, getRows(tableName));
 }
@@ -171,9 +177,8 @@ function showSection(tableName) {
     currentTable = $("#" + tableName + "Table").find("tbody").eq(0);
     currentTableName = tableName;
 
-    refRefreshTable(tableName);
+    refreshTable(tableName);
 
     //покажемо заголовок
     $("h1").text(systemElements[tableName]);
 }
-
