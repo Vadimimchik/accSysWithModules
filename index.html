@@ -5,23 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Моя система обліку</title>
 
-    <!-- бібліотека Font Awesome для іконок -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="styles/menu.css">
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/modal.css">
     <link rel="stylesheet" href="styles/sidebar.css">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 <body>
 
 <div class="container">
     <div class="sidebar" id="sidebar">
         <ul role="menubar">
-            <!-- <li role="menuitem" class="consts-item">
-                <i class="fas fa-cog"></i>
-                <span>Константи</span>
-            </li> -->
             <li role="menuitem" class="refs-item">
                 <i class="fas fa-book"></i>
                 <span>Довідники</span>
@@ -38,18 +32,9 @@
             <ul role="menu" class="submenu-item" id="docsubmenu">
                 <li role="menuitem" class="submenu-item" id="invoices">Прибуткові накладні</li>
                 <li role="menuitem" class="submenu-item" id="saleinvoices">Видаткові накладні</li>
-                <!-- <li role="menuitem" class="submenu-item" id="goodsmoving">Переміщення товарів</li> -->
                 <li role="menuitem" class="submenu-item" id="salereturn">Повернення від покупця</li>
                 <li role="menuitem" class="submenu-item" id="purchasereturn">Повернення постачальнику</li>
             </ul>
-            <!-- <li role="menuitem" class="reports-item">
-                <i class="fas fa-chart-bar"></i>
-                <span>Звіти</span>
-            </li>
-            <ul role="menu" class="submenu-item" id="reportsubmenu">
-                <li role="menuitem" class="submenu-item" id="goodsmovement">Рух товарів</li>
-                <li role="menuitem" class="submenu-item" id="settlements">Взаєморозрахунки</li>
-            </ul> -->
         </ul>
     </div>
 
@@ -73,7 +58,6 @@
             <table id="warehouseTable">
                 <thead>
                     <tr>
-                        <!-- <th style="visibility: hidden;">id</th> -->
                         <th>Код</th>
                         <th>Найменування</th>
                     </tr>
@@ -91,7 +75,6 @@
             <table id="customerTable">
                 <thead>
                     <tr>
-                        <!-- <th style="visibility: hidden;">id</th> -->
                         <th>Код</th>
                         <th>Найменування</th>
                     </tr>
@@ -109,7 +92,6 @@
             <table id="goodTable">
                 <thead>
                     <tr>
-                        <!-- <th style="visibility: hidden;">id</th> -->
                         <th>Код</th>
                         <th>Найменування</th>
                     </tr>
@@ -155,28 +137,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Рядки з'являтимуться тут -->
                 </tbody>
             </table>
         </div>
-
-        <!-- <div id="goodsmovingSection" class="hidden" data-type="table">
-            <button class="add-btn" onclick="openRefModal('warehouse')" title="Додати запис">+</button>
-            <button class="delete-btn" onclick="deleteSelectedRow()" title="Видалити обраний запис"">-</button>
-            <button class="refresh-btn" onclick="refreshWarehouses()" title="Оновити">O</button>
-            <table id="goodsmovingTable">
-                <thead>
-                    <tr>
-                        <th>Дата</th>
-                        <th>Номер</th>
-                        <th>Звідки</th>
-                        <th>Куди</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div> -->
 
         <div id="salereturnSection" class="hidden" data-type="table">
             <button class="add-btn" onclick="openDocModal('salereturn')" title="Додати запис">+</button>
@@ -193,7 +156,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Рядки з'являтимуться тут -->
                 </tbody>
             </table>
         </div>
@@ -213,7 +175,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Рядки з'являтимуться тут -->
                 </tbody>
             </table>
         </div>
@@ -247,18 +208,14 @@
         </div>
         <div>
             <label for="docModalCustomer">Контрагент:</label>
-            <!-- <input type="text" id="docModalCustomer" placeholder="Введіть контрагента"> -->
             <select id="docModalCustomer" name="docModalCustomer"></select>
         </div>
         <div>
             <label for="docModalWarehouse">Склад:</label>
-            <!-- <input type="text" id="docModalWarehouse" placeholder="Введіть склад"> -->
             <select id="docModalWarehouse" name="docModalWarehouse">
-                <!-- тут будуть склади  -->
             </select>
         </div>
 
-        <!-- Таблиця товарів -->
         <table class="goods-table">
             <thead>
                 <tr>
