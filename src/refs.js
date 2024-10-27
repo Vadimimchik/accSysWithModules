@@ -6,10 +6,14 @@ class Ref {
 
     constructor(code, name, id) {
         let lvCode = code;
+        let isMark;
         if (typeof code == "object") {
             lvCode = code.code;
             name = code.name;
             id = code.id;
+            isMark = code.isMark;
+        } else {
+            isMark = false;
         }
 
         this.#refCode = lvCode;
@@ -19,7 +23,7 @@ class Ref {
         } else {
             this.#id = id;
         }
-        this.#isMark = false;
+        this.#isMark = isMark;
 
     }
 

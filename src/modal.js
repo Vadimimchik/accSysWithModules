@@ -119,8 +119,8 @@ function saveRefRow() {
 		cell2.text(name);
 
 		currentElement.save();
-		// cell1.val(currentElement);
-		selectedRow.val(currentElement.id);
+		cell1.val(currentElement.id);
+		// selectedRow.val(currentElement.id);
 		closeRefModal();
 		refreshTable(currentTableName);
 	} else {

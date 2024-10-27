@@ -75,16 +75,6 @@ class Doc {
         return this.#id;
     }
 
-    delete() {
-        this.#isMark = true;
-        this.save();
-    }
-
-    cancelDel() {
-        this.#isMark = false;
-        this.save();
-    }
-
     get isMark() {
         return this.#isMark;
     }
@@ -248,6 +238,7 @@ class SaleInvoice extends GoodsDoc{
         const thisStr = JSON.stringify(this);
         localStorage.setItem("saleinvoice_" + this.id, thisStr);
     }
+
 }
 
 class Invoice extends GoodsDoc{

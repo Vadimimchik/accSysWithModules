@@ -58,9 +58,9 @@ function editDocRow(row) {
 // Функція для видалення вибраного рядка довідника
 function deleteSelectedRowRef() {
     if (selectedRow !== null) {
-        const curentRef = Ref.getByID(selectedRow.val());
+        const curentRef = Ref.getByID(selectedRow.val(), currentTableName);
         if (curentRef.isMark) {
-            curentVal.cancelDel();
+            curentRef.cancelDel();
             selectedRow.css("text-decoration", "none");
         } else {
             curentRef.delete();
@@ -72,7 +72,7 @@ function deleteSelectedRowRef() {
 // Функція для видалення вибраного рядка документу
 function deleteSelectedRowDoc() {
     if (selectedRow !== null) {
-        const curentDoc = Doc.getByID(selectedRow.val());
+        const curentDoc = Doc.getByID(selectedRow.val(), currentTableName);
         curentDoc.delete();
     }
     refreshTable(currentTableName);
